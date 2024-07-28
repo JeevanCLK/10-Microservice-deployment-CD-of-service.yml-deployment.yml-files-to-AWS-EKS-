@@ -48,8 +48,7 @@ metadata:
   labels:
     app: frontend
 spec:
-  type: LoadBalancer
-  selector:
+    selector:
     app: frontend
   ports:
   - protocol: TCP
