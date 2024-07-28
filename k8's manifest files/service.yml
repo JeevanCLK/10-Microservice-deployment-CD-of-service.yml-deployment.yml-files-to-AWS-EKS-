@@ -17,6 +17,32 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: cartservice
+  labels:
+    app: cartservice
+spec:
+  selector:
+    app: cartservice
+  ports:
+  - protocol: TCP
+    port: 7070
+    targetPort: 7070
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cart
+  labels:
+    app: redis-cart
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: redis-cart
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: emailservice
   labels:
     app: emailservice
@@ -87,20 +113,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cartservice
-  labels:
-    app: cartservice
-spec:
-  selector:
-    app: cartservice
-  ports:
-  - protocol: TCP
-    port: 7070
-    targetPort: 7070
----
-apiVersion: v1
-kind: Service
-metadata:
   name: currencyservice
   labels:
     app: currencyservice
@@ -139,16 +151,3 @@ spec:
   - protocol: TCP
     port: 9555
     targetPort: 9555
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-cart
-  labels:
-    app: redis-cart
-spec:
-  ports:
-  - port: 6379
-  selector:
-    app: redis-cart
-
