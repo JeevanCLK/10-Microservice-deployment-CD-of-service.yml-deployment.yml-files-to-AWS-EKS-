@@ -2,6 +2,21 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: emailservice
   labels:
     app: emailservice
@@ -39,21 +54,6 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 8080
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-  labels:
-    app: frontend
-spec:
-  type: LoadBalancer
-  selector:
-    app: frontend
-  ports:
-  - protocol: TCP
-    port: 80
     targetPort: 8080
 ---
 apiVersion: v1
@@ -139,3 +139,16 @@ spec:
   - protocol: TCP
     port: 9555
     targetPort: 9555
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cart
+  labels:
+    app: redis-cart
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: redis-cart
+
