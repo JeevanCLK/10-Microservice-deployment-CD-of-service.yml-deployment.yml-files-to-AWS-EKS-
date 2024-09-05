@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend-service
 spec:
   selector:
     matchLabels:
-      app: frontend
+      app: frontend-service
   template:
     metadata:
       labels:
-        app: frontend
+        app: frontend-service
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       serviceAccountName: default
       containers:
         - name: server
-          image: jeevanclk/frontend:latest
+          image: jeevanclk/frontend-service:latest
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -40,19 +40,19 @@ spec:
           - name: PORT
             value: "8080"
           - name: PRODUCT_CATALOG_SERVICE_ADDR
-            value: "productcatalogservice:3550"
+            value: "productcatalogue-service:3550"
           - name: CURRENCY_SERVICE_ADDR
-            value: "currencyservice:7000"
+            value: "currency-service:7000"
           - name: CART_SERVICE_ADDR
-            value: "cartservice:7070"
+            value: "cart-service:7070"
           - name: RECOMMENDATION_SERVICE_ADDR
-            value: "recommendationservice:8080"
+            value: "recommendation-service:8080"
           - name: SHIPPING_SERVICE_ADDR
-            value: "shippingservice:50051"
+            value: "shipping-service:50051"
           - name: CHECKOUT_SERVICE_ADDR
-            value: "checkoutservice:5050"
+            value: "checkout-service:5050"
           - name: AD_SERVICE_ADDR
-            value: "adservice:9555"
+            value: "ad-service:9555"
           - name: ENABLE_PROFILER
             value: "0"
           resources:
@@ -68,20 +68,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cartservice
+  name: cart-service
 spec:
   selector:
     matchLabels:
-      app: cartservice
+      app: cart-service
   template:
     metadata:
       labels:
-        app: cartservice
+        app: cart-service
     spec:
       serviceAccountName: default
       containers:
       - name: server
-        image: jeevanclk/cartservice:latest
+        image: jeevanclk/cart-service:latest
         ports:
         - containerPort: 7070
         readinessProbe:
@@ -129,15 +129,15 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: emailservice
+  name: email-service
 spec:
   selector:
     matchLabels:
-      app: emailservice
+      app: email-service
   template:
     metadata:
       labels:
-        app: emailservice
+        app: email-service
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
@@ -155,7 +155,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: jeevanclk/emailservice:latest
+        image: jeevanclk/email-service:latest
         ports:
         - containerPort: 8080
         env:
@@ -184,20 +184,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: checkoutservice
+  name: checkout-service
 spec:
   selector:
     matchLabels:
-      app: checkoutservice
+      app: checkout-service
   template:
     metadata:
       labels:
-        app: checkoutservice
+        app: checkout-service
     spec:
       serviceAccountName: default
       containers:
         - name: server
-          image: jeevanclk/checkoutservice:latest
+          image: jeevanclk/checkout-service:latest
           ports:
           - containerPort: 5050
           readinessProbe:
@@ -210,17 +210,17 @@ spec:
           - name: PORT
             value: "5050"
           - name: PRODUCT_CATALOG_SERVICE_ADDR
-            value: "productcatalogservice:3550"
+            value: "productcatalogue-service:3550"
           - name: SHIPPING_SERVICE_ADDR
-            value: "shippingservice:50051"
+            value: "shipping-service:50051"
           - name: PAYMENT_SERVICE_ADDR
-            value: "paymentservice:50051"
+            value: "payment-service:50051"
           - name: EMAIL_SERVICE_ADDR
-            value: "emailservice:5000"
+            value: "email-service:5000"
           - name: CURRENCY_SERVICE_ADDR
-            value: "currencyservice:7000"
+            value: "currency-service:7000"
           - name: CART_SERVICE_ADDR
-            value: "cartservice:7070"
+            value: "cart-service:7070"
           resources:
             requests:
               cpu: 100m
@@ -234,21 +234,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: recommendationservice
+  name: recommendation-service
 spec:
   selector:
     matchLabels:
-      app: recommendationservice
+      app: recommendation-service
   template:
     metadata:
       labels:
-        app: recommendationservice
+        app: recommendation-service
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jeevanclk/recommendationservice:latest
+        image: jeevanclk/recommendation-service:latest
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -263,7 +263,7 @@ spec:
         - name: PORT
           value: "8080"
         - name: PRODUCT_CATALOG_SERVICE_ADDR
-          value: "productcatalogservice:3550"
+          value: "productcatalogue-service:3550"
         - name: DISABLE_PROFILER
           value: "1"
         resources:
@@ -279,21 +279,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: paymentservice
+  name: payment-service
 spec:
   selector:
     matchLabels:
-      app: paymentservice
+      app: payment-service
   template:
     metadata:
       labels:
-        app: paymentservice
+        app: payment-service
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jeevanclk/paymentservice:latest
+        image: jeevanclk/payment-service:latest
         ports:
         - containerPort: 50051
         env:
@@ -320,21 +320,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: productcatalogservice
+  name: productcatalogue-service
 spec:
   selector:
     matchLabels:
-      app: productcatalogservice
+      app: productcatalogue-service
   template:
     metadata:
       labels:
-        app: productcatalogservice
+        app: productcatalogue-service
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jeevanclk/productcatalogservice:latest
+        image: jeevanclk/productcatalogue-service:latest
         ports:
         - containerPort: 3550
         env:
@@ -361,21 +361,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: currencyservice
+  name: currency-service
 spec:
   selector:
     matchLabels:
-      app: currencyservice
+      app: currency-service
   template:
     metadata:
       labels:
-        app: currencyservice
+        app: currency-service
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jeevanclk/currencyservice:latest
+        image: jeevanclk/currency-service:latest
         ports:
         - containerPort: 7000
         readinessProbe:
@@ -402,21 +402,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shippingservice
+  name: shipping-service
 spec:
   selector:
     matchLabels:
-      app: shippingservice
+      app: shipping-service
   template:
     metadata:
       labels:
-        app: shippingservice
+        app: shipping-service
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jeevanclk/shippingservice:latest
+        image: jeevanclk/shipping-service:latest
         ports:
         - containerPort: 50051
         readinessProbe:
@@ -443,21 +443,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: adservice
+  name: ad-service
 spec:
   selector:
     matchLabels:
-      app: adservice
+      app: ad-service
   template:
     metadata:
       labels:
-        app: adservice
+        app: ad-service
     spec:
       serviceAccountName: default  # Ensure this service account has necessary permissions
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jeevanclk/adservice:latest
+        image: jeevanclk/ad-service:latest
         ports:
         - containerPort: 9555
         readinessProbe:
